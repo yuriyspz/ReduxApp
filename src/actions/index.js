@@ -1,5 +1,6 @@
 import axios from 'axios'
-const url= `https://spring-boot-mysql-server-part0.herokuapp.com/api/books`;
+
+const url = `https://spring-boot-mysql-server-part0.herokuapp.com/api/books`;
 
 
 export const getAllBooksSuccess = (books) => {
@@ -8,20 +9,28 @@ export const getAllBooksSuccess = (books) => {
         payload: books
     }
 };
-
 export const createBookSuccess = (data) => {
     return {
         type: 'CREATE_BOOK',
         payload: {
-            id:data.id,
-            title:data.title,
-            author:data.author,
-            description:data.description,
-            published:data.published
-    }
+            id: data.id,
+            title: data.title,
+            author: data.author,
+            description: data.description,
+            published: data.published
+        }
     }
 };
-
+export const updateBookSuccess = (id, data) => {
+    return (dispatch) => {
+        dispatch({type: 'UPDATE_BOOK', id: id, data: data});
+    }
+};
+export const deleteBookSuccess = (id) => {
+    return (dispatch) => {
+        dispatch({type: 'DELETE_BOOK', id: id});
+    }
+};
 export const getAllBooks = () => {
     return (dispatch) => {
         return axios.get(url)
@@ -30,13 +39,33 @@ export const getAllBooks = () => {
             })
     }
 };
-
 export const createBook = (book) => {
-    console.log('333333'+JSON.stringify(book));
+    console.log('333333' + JSON.stringify(book));
     return (dispatch) => {
         return axios.post(`${url}/create`, book)
             .then((response) => {
                 dispatch(createBookSuccess(response.data))
             })
+    }
+};
+export const updateBook = (id, data) => {
+    return (dispatch) => {
+        return axios.put(`${url}/${id}`, {
+            title: data.title,
+            author: data.author,
+            description: data.description,
+            published: data.published
+        })
+            .then(res => {
+                dispatch(updateBookSuccess(id, data));
+            });
+    }
+};
+export const deleteBook = (id) => {
+    return (dispatch) => {
+        return axios.delete(`${url}/${id}`)
+            .then(res => {
+                dispatch(deleteBookSuccess(id));
+            });
     }
 };

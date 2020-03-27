@@ -22,10 +22,7 @@ class BookList extends React.Component {
                         this.props.books.map((item, index) =>
                             <SingleBook
                                 key={index}
-                                bookTitile={item.title}
-                                bookAuthor={item.author}
-                                bookDescription={item.description}
-                                bookPublished={item.published}
+                                book={item}
                             >
                                 {item.title}
                             </SingleBook>
